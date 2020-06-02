@@ -21,12 +21,9 @@ sudo apt install -y \
     git \
     python3-pip \
     cmake \
-    fonts-powerlines \
-    libfreetype6-dev \
-    libfontconfig1-dev \
     xclip \
     tmux \
-    ripgrep 
+    ripgrep \
     ltrace \
     strace \
     gdb \
@@ -41,9 +38,9 @@ sudo apt install -y \
 # Some common python tools for CTF stuff
 pip3 install --upgrade pip
 pip3 install virtualenv requests angr cryptography unicorn ropper capstone mitmproxy ipython
-python3 -m pip install --upgrade git+https://github.com/Gallopsled/pwntools.git@dev3
+python3 -m pip install --upgrade git+https://github.com/Gallopsled/pwntools.git@dev
 wget -q -O- https://github.com/hugsy/gef/raw/master/scripts/gef.sh | sh
-gem install one_gadget
+sudo gem install one_gadget
 
 # Custom utility 
 (mkdir $HOME/.local || : ) 2> /dev/null
@@ -66,7 +63,7 @@ echo "TODO: Add bash_history"
 
 # Make sure environment variables are setup
 
-echo "export PATH=\"\$PATH:\$USER/.local/utility-scripts:\"" >> $HOME/.bashrc
+echo "export PATH=\"\$PATH:\$HOME/.local/utility-scripts\"" >> $HOME/.bashrc
 echo "export LC_CTYPE=C.UTF-8" >> $HOME/.bashrc
 
 
