@@ -37,7 +37,7 @@ sudo apt install -y \
 
 # Some common python tools for CTF stuff
 pip3 install --upgrade pip
-pip3 install virtualenv requests angr cryptography unicorn ropper capstone mitmproxy ipython
+pip3 install virtualenv httpx angr cryptography unicorn ropper capstone mitmproxy ipython
 python3 -m pip install --upgrade git+https://github.com/Gallopsled/pwntools.git@dev
 wget -q -O- https://github.com/hugsy/gef/raw/master/scripts/gef.sh | sh
 sudo gem install one_gadget
