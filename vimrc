@@ -43,6 +43,10 @@ let g:netrw_browse_split = 4
 let g:netrw_altv = 1
 let g:netrw_winsize = 25
 
+autocmd FileType python setlocal completeopt-=preview
+let g:jedi#auto_vim_configuration = 0
+let g:jedi#popup_on_dot = 0
+
 set laststatus=2
 
 set t_Co=256
