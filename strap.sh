@@ -15,7 +15,6 @@ else
     echo "Skipping VirtualBox Guest Additions."
 fi
 
-
 # Install tools
 
 sudo apt remove -y vim
@@ -43,7 +42,9 @@ sudo apt install -y \
     python3-dev \
     ruby \
     netcat \
-    gnupg-agent
+    gnupg-agent \
+    ghex \
+    openjdk-11-jdk
 
 # Docker for easier backwards compatiblity and stuff
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -58,20 +59,21 @@ sudo apt-get install -y docker-ce
 # Some common python tools for CTF stuff
 python3 -m pip install --upgrade pip
 
-pyhton3 -m pip install --user pipx
+python3 -m pip install --user pipx
 echo "export PATH=\"\$PATH:\$HOME/.local/bin\"" >> $HOME/.bashrc
 source $HOME/.bashrc
 
 python3 -m pipx install mitmproxy
+python3 -m pipx install ropper
 
 python3 -m pip install --upgrade virtualenv httpx ipython
 mkdir $HOME/venvs
 cd $HOME/venvs
 
-for package in "angr" "pwntools" "cryptography" "pycroptodomex"
+for package in "angr" "pwntools" "cryptography" "pycryptodomex"
 do
-    virtualenv $package
-    source angr/bin/activate
+    virtualenv $package || continue
+    source $package/bin/activate || continue
     python3 -m pip install $package
     deactivate
 done
