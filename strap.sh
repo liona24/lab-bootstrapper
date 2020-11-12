@@ -74,12 +74,6 @@ sudo gem install one_gadget
 
 (mkdir $HOME/.local || : ) 2> /dev/null
 
-# qira
-git clone https://github.com/geohot/qira.git $HOME/qira
-cd $Home/qira
-sudo docker build -t qira -f docker/Dockerfile .
-cd $OLD_PWD
-
 # Custom utility 
 git clone https://github.com/liona24/utility-scripts.git $HOME/.local/utility-scripts
 
