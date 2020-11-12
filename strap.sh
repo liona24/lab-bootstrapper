@@ -7,7 +7,7 @@ sudo apt upgrade -y
 
 # Setup VirtualBox Guest Additions
 
-sudo apt install build-essential module-assistant
+sudo apt install -y build-essential module-assistant
 read -p "Path to VirtualBox Guest Additions: " VBOX_GUEST_PATH
 if [ ! -z "$VBOX_GUEST_PATH" ]; then 
     sudo bash $VBOX_GUEST_PATH/VBoxLinuxAdditions.run
@@ -27,22 +27,25 @@ sudo apt install -y \
     ca-certificates \
     git \
     python3-pip \
+    python3-venv \
     cmake \
     xclip \
     tmux \
     ripgrep \
+    binutils \
     ltrace \
     strace \
     gdb \
+    gdbserver \
+    gdb-multiarch \
     libssl-dev \
     libffi-dev \
     python3-dev \
     ruby \
-    gdbserver \
     netcat \
     gnupg-agent
 
-# Docker for backwards easier backwards compatiblity and stuff
+# Docker for easier backwards compatiblity and stuff
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository \
    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
@@ -53,9 +56,28 @@ sudo apt-get install -y docker-ce
 
 
 # Some common python tools for CTF stuff
-pip3 install --upgrade pip
-pip3 install virtualenv httpx angr cryptography unicorn ropper capstone mitmproxy ipython
-python3 -m pip install --upgrade git+https://github.com/Gallopsled/pwntools.git@dev
+python3 -m pip install --upgrade pip
+
+pyhton3 -m pip install --user pipx
+echo "export PATH=\"\$PATH:\$HOME/.local/bin\"" >> $HOME/.bashrc
+source $HOME/.bashrc
+
+python3 -m pipx install mitmproxy
+
+python3 -m pip install --upgrade virtualenv httpx ipython
+mkdir $HOME/venvs
+cd $HOME/venvs
+
+for package in "angr" "pwntools" "cryptography" "pycroptodomex"
+do
+    virtualenv $package
+    source angr/bin/activate
+    python3 -m pip install $package
+    deactivate
+done
+
+cd $OLD_PWD
+
 wget -q -O- https://github.com/hugsy/gef/raw/master/scripts/gef.sh | sh
 
 # install keystone. uff
@@ -96,5 +118,4 @@ echo "TODO: Add bash_history"
 
 echo "export PATH=\"\$PATH:\$HOME/.local/utility-scripts\"" >> $HOME/.bashrc
 echo "export LC_CTYPE=C.UTF-8" >> $HOME/.bashrc
-
 
