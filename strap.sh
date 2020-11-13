@@ -44,7 +44,9 @@ sudo apt install -y \
     netcat \
     gnupg-agent \
     ghex \
-    openjdk-11-jdk
+    openjdk-11-jdk \
+    zsh \
+    httpie
 
 # Docker for easier backwards compatiblity and stuff
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -55,13 +57,28 @@ sudo add-apt-repository \
 sudo apt-get update
 sudo apt-get install -y docker-ce
 
+# Setup new shell
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+chsh -s $(which zsh)
+zsh
+
+shell_config=$HOME/.zshrc
+
+git clone https://github.com/zdharma/fast-syntax-highlighting.git \
+  ${ZSH_CUSTOM:$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
+
+git clone https://github.com/zsh-users/zsh-autosuggestions.git \
+  ${ZSH_CUSTOM:$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+
+sed 's/^plugins=\(.*\)/plugins=(git fast-syntax-highlighting zsh-autosuggestions)/' $shell_config > "$shell_config.tmp"
+mv "$shell_config.tmp" $shell_config
 
 # Some common python tools for CTF stuff
 python3 -m pip install --upgrade pip
 
 python3 -m pip install --user pipx
-echo "export PATH=\"\$PATH:\$HOME/.local/bin\"" >> $HOME/.bashrc
-source $HOME/.bashrc
+echo "export PATH=\"\$PATH:\$HOME/.local/bin\"" >> $shell_config
+source $shell_config
 
 python3 -m pipx install mitmproxy
 python3 -m pipx install ropper
@@ -112,12 +129,8 @@ vim --headless +PlugInstall +qall > /dev/null
 
 cp ./tmux.conf $HOME/.tmux.conf
 
-# overclocked bash history
-
-echo "TODO: Add bash_history"
-
 # Make sure environment variables are setup
 
-echo "export PATH=\"\$PATH:\$HOME/.local/utility-scripts\"" >> $HOME/.bashrc
-echo "export LC_CTYPE=C.UTF-8" >> $HOME/.bashrc
+echo "export PATH=\"\$PATH:\$HOME/.local/utility-scripts\"" >> $shell_config
+echo "export LC_CTYPE=C.UTF-8" >> $shell_config
 
